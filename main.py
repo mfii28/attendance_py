@@ -55,6 +55,15 @@ ctk.set_default_color_theme("blue")
 class AttendanceApp(ctk.CTk):
     """Main application window using CustomTkinter with enhanced scaling and visibility."""
 
+    def _safe_grab_set(self, window) -> None:
+        """Safely set grab on a window, avoiding TclError if it is not yet viewable."""
+        window.deiconify()
+        window.update_idletasks()
+        try:
+            window.grab_set()
+        except tk.TclError:
+            pass
+
     def __init__(self):
         super().__init__()
         
@@ -598,7 +607,7 @@ class AttendanceApp(ctk.CTk):
         # Standard unscaled dialog geometry (natively scaled by CTk)
         win.geometry("700x500")
         win.transient(self)
-        win.grab_set()
+        self._safe_grab_set(win)
 
         ctk.CTkLabel(
             win,
@@ -1297,7 +1306,7 @@ class AttendanceApp(ctk.CTk):
         # Standard unscaled dialog geometry (natively scaled by CTk)
         dlg.geometry("550x380")
         dlg.transient(self)
-        dlg.grab_set()
+        self._safe_grab_set(dlg)
 
         ctk.CTkLabel(dlg, text=f"Source: {os.path.basename(file_path)}", font=self._ctk_font_large).pack(pady=15)
         ctk.CTkLabel(dlg, text=f"Year: {meta.get('year')}", font=self._ctk_font).pack(pady=2)
@@ -1333,7 +1342,7 @@ class AttendanceApp(ctk.CTk):
         # Standard unscaled dialog geometry (natively scaled by CTk)
         progress.geometry("300x120")
         progress.transient(self)
-        progress.grab_set()
+        self._safe_grab_set(progress)
         ctk.CTkLabel(progress, text="Processing workbook, please wait...", font=self._ctk_font).pack(padx=20, pady=40)
         progress.update()
 
@@ -1508,7 +1517,7 @@ class AttendanceApp(ctk.CTk):
         # Standard unscaled dialog geometry (natively scaled by CTk)
         dlg.geometry("500x200")
         dlg.transient(self)
-        dlg.grab_set()
+        self._safe_grab_set(dlg)
         
         result: Dict[str, Optional[Path]] = {"path": None}
 
@@ -1581,7 +1590,7 @@ class AttendanceApp(ctk.CTk):
         # Standard unscaled dialog geometry (natively scaled by CTk)
         dlg.geometry("750x500")
         dlg.transient(self)
-        dlg.grab_set()
+        self._safe_grab_set(dlg)
 
         ctk.CTkLabel(dlg, text=f"Source: {os.path.basename(file_path)}", font=self._ctk_font_large).pack(pady=15)
         ctk.CTkLabel(dlg, text=f"Date Range: {meta.get('date_start')} to {meta.get('date_end')}", font=self._ctk_font).pack(pady=2)
@@ -1646,7 +1655,7 @@ class AttendanceApp(ctk.CTk):
         # Standard unscaled dialog geometry (natively scaled by CTk)
         progress.geometry("300x120")
         progress.transient(self)
-        progress.grab_set()
+        self._safe_grab_set(progress)
         ctk.CTkLabel(progress, text="Processing file, please wait...", font=self._ctk_font).pack(padx=20, pady=40)
         progress.update()
 
