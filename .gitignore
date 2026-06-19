@@ -1,0 +1,47 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging / PyInstaller
+build/
+dist/
+*.spec
+*.egg-info/
+.eggs/
+*.egg
+MANIFEST
+
+# Local database file
+attendance.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Log files
+*.log
+logs/
+
+# Generated files / Exports / Local imports
+exports/
+imports/
+
+# IDE files
+.vscode/
+.idea/
+.cursor/
+.qodo/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini

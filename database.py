@@ -219,26 +219,32 @@ class Database:
                     )
 
     def get_or_create_employee(
-        self, enno: str, export_name: str, display_name: Optional[str] = None
+        self, enno: str, export_name: str, display_name: Optional[str] = None, conn: Optional[sqlite3.Connection] = None
     ) -> int:
         enno = normalize_enno(enno)
-        with self.connection() as conn:
-            row = conn.execute(
+        
+        def execute_logic(connection):
+            row = connection.execute(
                 "SELECT id, export_name FROM employees WHERE enno = ?", (enno,)
             ).fetchone()
             if row:
                 if row["export_name"] != export_name:
-                    conn.execute(
+                    connection.execute(
                         "UPDATE employees SET export_name = ?, last_updated = ? WHERE id = ?",
                         (export_name, datetime.now().isoformat(), row["id"]),
                     )
                 return row["id"]
-            cur = conn.execute(
+            cur = connection.execute(
                 """INSERT INTO employees (enno, export_name, display_name, last_updated)
                    VALUES (?, ?, ?, ?)""",
                 (enno, export_name, display_name, datetime.now().isoformat()),
             )
             return cur.lastrowid
+
+        if conn is not None:
+            return execute_logic(conn)
+        with self.connection() as conn:
+            return execute_logic(conn)
 
     def migrate_display_names(self) -> None:
         """Clear auto-copied display names so export name remains the default."""
@@ -257,24 +263,39 @@ class Database:
                     (row["id"],),
                 )
 
-    def get_employee(self, employee_id: int) -> Optional[Dict[str, Any]]:
-        with self.connection() as conn:
-            row = conn.execute("SELECT * FROM employees WHERE id = ?", (employee_id,)).fetchone()
+    def get_employee(self, employee_id: int, conn: Optional[sqlite3.Connection] = None) -> Optional[Dict[str, Any]]:
+        def execute_logic(connection):
+            row = connection.execute("SELECT * FROM employees WHERE id = ?", (employee_id,)).fetchone()
             return dict(row) if row else None
 
-    def get_employee_by_enno(self, enno: str) -> Optional[Dict[str, Any]]:
+        if conn is not None:
+            return execute_logic(conn)
+        with self.connection() as conn:
+            return execute_logic(conn)
+
+    def get_employee_by_enno(self, enno: str, conn: Optional[sqlite3.Connection] = None) -> Optional[Dict[str, Any]]:
         enno = normalize_enno(enno)
-        with self.connection() as conn:
-            row = conn.execute("SELECT * FROM employees WHERE enno = ?", (enno,)).fetchone()
+        def execute_logic(connection):
+            row = connection.execute("SELECT * FROM employees WHERE enno = ?", (enno,)).fetchone()
             return dict(row) if row else None
 
-    def get_all_employees(self, active_only: bool = True) -> List[Dict[str, Any]]:
+        if conn is not None:
+            return execute_logic(conn)
         with self.connection() as conn:
+            return execute_logic(conn)
+
+    def get_all_employees(self, active_only: bool = True, conn: Optional[sqlite3.Connection] = None) -> List[Dict[str, Any]]:
+        def execute_logic(connection):
             sql = "SELECT * FROM employees"
             if active_only:
                 sql += " WHERE is_active = 1"
             sql += " ORDER BY COALESCE(NULLIF(TRIM(display_name), ''), export_name)"
-            return [dict(r) for r in conn.execute(sql).fetchall()]
+            return [dict(r) for r in connection.execute(sql).fetchall()]
+
+        if conn is not None:
+            return execute_logic(conn)
+        with self.connection() as conn:
+            return execute_logic(conn)
 
     def update_display_name(
         self, employee_id: int, new_name: str, changed_by: str = "user"
@@ -356,9 +377,10 @@ class Database:
         is_late_flag: bool,
         late_mins: int,
         source_file: str,
+        conn: Optional[sqlite3.Connection] = None,
     ) -> None:
-        with self.connection() as conn:
-            conn.execute(
+        def execute_logic(connection):
+            connection.execute(
                 """INSERT INTO attendance_records
                    (employee_id, date, arrival_time, departure_time, is_late, late_minutes, source_file, imported_at)
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -380,6 +402,12 @@ class Database:
                     datetime.now().isoformat(),
                 ),
             )
+
+        if conn is not None:
+            execute_logic(conn)
+        else:
+            with self.connection() as conn:
+                execute_logic(conn)
 
     def record_exists(self, employee_id: int, record_date: date, arrival: time) -> bool:
         with self.connection() as conn:
@@ -488,9 +516,10 @@ class Database:
         late_incidents: int,
         avg_late_mins: float,
         perfect_count: int,
+        conn: Optional[sqlite3.Connection] = None,
     ) -> None:
-        with self.connection() as conn:
-            conn.execute(
+        def execute_logic(connection):
+            connection.execute(
                 """INSERT INTO monthly_metrics
                    (year, month, avg_attendance_rate, total_late_incidents, avg_lateness_minutes, perfect_attendance_count)
                    VALUES (?, ?, ?, ?, ?, ?)
@@ -501,6 +530,12 @@ class Database:
                    perfect_attendance_count = excluded.perfect_attendance_count""",
                 (year, month, avg_rate, late_incidents, avg_late_mins, perfect_count),
             )
+
+        if conn is not None:
+            execute_logic(conn)
+        else:
+            with self.connection() as conn:
+                execute_logic(conn)
 
     def get_monthly_metrics(self, months: int = 12) -> List[Dict[str, Any]]:
         with self.connection() as conn:
@@ -518,23 +553,30 @@ class Database:
         working_days: List[int],
         holidays: Optional[List[date]] = None,
         mode: str = "data",
+        conn: Optional[sqlite3.Connection] = None,
     ) -> int:
         """Count working days: 'data' = unique weekday dates in records (bash script logic)."""
         if mode == "calendar":
             return working_days_in_range(start, end, working_days, holidays)
         holidays_set = set(holidays or [])
-        with self.connection() as conn:
-            rows = conn.execute(
+
+        def execute_logic(connection):
+            rows = connection.execute(
                 """SELECT DISTINCT date FROM attendance_records
                    WHERE date BETWEEN ? AND ?""",
                 (start.isoformat(), end.isoformat()),
             ).fetchall()
-        count = 0
-        for row in rows:
-            d = datetime.strptime(row["date"], "%Y-%m-%d").date()
-            if not is_weekend(d, working_days) and d not in holidays_set:
-                count += 1
-        return count
+            count = 0
+            for row in rows:
+                d = datetime.strptime(row["date"], "%Y-%m-%d").date()
+                if not is_weekend(d, working_days) and d not in holidays_set:
+                    count += 1
+            return count
+
+        if conn is not None:
+            return execute_logic(conn)
+        with self.connection() as conn:
+            return execute_logic(conn)
 
     def get_working_dates(
         self,
@@ -566,19 +608,20 @@ class Database:
         holidays: Optional[List[date]] = None,
         working_days_mode: str = "data",
         excused_codes: Optional[List[str]] = None,
+        conn: Optional[sqlite3.Connection] = None,
     ) -> List[Dict[str, Any]]:
         """Compute attendance summary per employee for date range."""
-        employees = self.get_all_employees(active_only=True)
-        work_days = self.get_working_days_count(
-            start, end, working_days, holidays, mode=working_days_mode
-        )
-        holidays_set = set(holidays or [])
-        excused_set = set(excused_codes or [])
-        results = []
+        def execute_logic(connection):
+            employees = self.get_all_employees(active_only=True, conn=connection)
+            work_days = self.get_working_days_count(
+                start, end, working_days, holidays, mode=working_days_mode, conn=connection
+            )
+            holidays_set = set(holidays or [])
+            excused_set = set(excused_codes or [])
+            results = []
 
-        with self.connection() as conn:
             for emp in employees:
-                rows = conn.execute(
+                rows = connection.execute(
                     """SELECT * FROM attendance_records
                        WHERE employee_id = ? AND date BETWEEN ? AND ?""",
                     (emp["id"], start.isoformat(), end.isoformat()),
@@ -615,7 +658,7 @@ class Database:
                     earliest = min(arrivals)
                     latest = max(arrivals)
 
-                leave_rows = self.get_leave_for_employee(emp["id"], start, end)
+                leave_rows = self.get_leave_for_employee(emp["id"], start, end, conn=connection)
                 leave_by_date = {
                     datetime.strptime(r["date"], "%Y-%m-%d").date(): r["code"]
                     for r in leave_rows
@@ -649,8 +692,13 @@ class Database:
                     "earliest_arrival": format_time(earliest),
                     "latest_arrival": format_time(latest),
                 })
-        results.sort(key=lambda x: x["lateness_rate"], reverse=True)
-        return results
+            results.sort(key=lambda x: x["lateness_rate"], reverse=True)
+            return results
+
+        if conn is not None:
+            return execute_logic(conn)
+        with self.connection() as conn:
+            return execute_logic(conn)
 
     def get_dashboard_kpis(
         self,
@@ -734,16 +782,22 @@ class Database:
             return [dict(r) for r in rows]
 
     def upsert_leave_record(
-        self, employee_id: int, record_date: date, code: str, notes: Optional[str] = None
+        self, employee_id: int, record_date: date, code: str, notes: Optional[str] = None, conn: Optional[sqlite3.Connection] = None
     ) -> None:
-        with self.connection() as conn:
-            conn.execute(
+        def execute_logic(connection):
+            connection.execute(
                 """INSERT INTO leave_records (employee_id, date, code, notes)
                    VALUES (?, ?, ?, ?)
                    ON CONFLICT(employee_id, date) DO UPDATE SET
                    code = excluded.code, notes = excluded.notes""",
                 (employee_id, record_date.isoformat(), code, notes),
             )
+
+        if conn is not None:
+            execute_logic(conn)
+        else:
+            with self.connection() as conn:
+                execute_logic(conn)
 
     def delete_leave_record(self, employee_id: int, record_date: date) -> bool:
         with self.connection() as conn:
@@ -754,10 +808,10 @@ class Database:
             return cur.rowcount > 0
 
     def get_leave_for_employee(
-        self, employee_id: int, start: date, end: date
+        self, employee_id: int, start: date, end: date, conn: Optional[sqlite3.Connection] = None
     ) -> List[Dict[str, Any]]:
-        with self.connection() as conn:
-            rows = conn.execute(
+        def execute_logic(connection):
+            rows = connection.execute(
                 """SELECT lr.*, lt.name as type_name, lt.deduction
                    FROM leave_records lr
                    JOIN leave_types lt ON lr.code = lt.code
@@ -766,6 +820,11 @@ class Database:
                 (employee_id, start.isoformat(), end.isoformat()),
             ).fetchall()
             return [dict(r) for r in rows]
+
+        if conn is not None:
+            return execute_logic(conn)
+        with self.connection() as conn:
+            return execute_logic(conn)
 
     def get_leave_for_month(self, year: int, month: int) -> List[Dict[str, Any]]:
         if month == 12:
@@ -825,9 +884,10 @@ class Database:
         year: int,
         annual_allocation: float,
         carry_over: float = 0.0,
+        conn: Optional[sqlite3.Connection] = None,
     ) -> None:
-        with self.connection() as conn:
-            conn.execute(
+        def execute_logic(connection):
+            connection.execute(
                 """INSERT INTO leave_entitlements (employee_id, year, annual_allocation, carry_over)
                    VALUES (?, ?, ?, ?)
                    ON CONFLICT(employee_id, year) DO UPDATE SET
@@ -835,6 +895,12 @@ class Database:
                    carry_over = excluded.carry_over""",
                 (employee_id, year, annual_allocation, carry_over),
             )
+
+        if conn is not None:
+            execute_logic(conn)
+        else:
+            with self.connection() as conn:
+                execute_logic(conn)
 
     def get_leave_on_date(self, employee_id: int, record_date: date) -> Optional[Dict[str, Any]]:
         with self.connection() as conn:

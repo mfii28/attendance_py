@@ -100,6 +100,7 @@ class ImportManager:
                     break
 
         df = pd.DataFrame(rows, columns=AGLOG_COLUMNS)
+        df = df.fillna("")
         df["EnNo"] = df["EnNo"].astype(str).str.strip()
         df["Name"] = df["Name"].astype(str).str.strip()
         df["DateTime"] = df["DateTime"].astype(str).str.strip()
@@ -116,6 +117,7 @@ class ImportManager:
         df = pd.read_csv(
             file_path, sep=delimiter, encoding=encoding, nrows=nrows, dtype=str
         )
+        df = df.fillna("")
         df.columns = [str(c).strip() for c in df.columns]
         if "EnNo" in df.columns:
             df["EnNo"] = df["EnNo"].astype(str).str.strip()
@@ -215,49 +217,53 @@ class ImportManager:
         daily_scans: Dict[Tuple[str, date], List[datetime]] = defaultdict(list)
         employee_names: Dict[str, str] = {}
         seen_keys: set = set()
-        known_employees = {e["enno"] for e in self.db.get_all_employees(active_only=False)}
 
-        for _, row in df.iterrows():
-            try:
-                enno = normalize_enno(str(row["EnNo"]).strip())
-                name = str(row["Name"]).strip()
-                dt = parse_datetime(str(row["DateTime"]))
-                record_date = dt.date()
+        with self.db.connection() as conn:
+            known_employees = {e["enno"] for e in self.db.get_all_employees(active_only=False, conn=conn)}
 
-                employee_names[enno] = name
+            for _, row in df.iterrows():
+                try:
+                    enno = normalize_enno(str(row["EnNo"]).strip())
+                    name = str(row["Name"]).strip()
+                    if not name or name.lower() in ("nan", "null", "none"):
+                        name = f"Employee {enno}"
+                    dt = parse_datetime(str(row["DateTime"]))
+                    record_date = dt.date()
 
-                dup_key = (enno, record_date.isoformat(), dt.strftime("%H:%M:%S"))
-                if dup_key in seen_keys:
-                    result.records_skipped += 1
-                    continue
-                seen_keys.add(dup_key)
+                    employee_names[enno] = name
 
-                if is_weekend(record_date, working_days) or record_date in holidays:
-                    continue
+                    dup_key = (enno, record_date.isoformat(), dt.strftime("%H:%M:%S"))
+                    if dup_key in seen_keys:
+                        result.records_skipped += 1
+                        continue
+                    seen_keys.add(dup_key)
 
-                if enno not in known_employees:
-                    self.db.get_or_create_employee(enno, name)
-                    known_employees.add(enno)
-                    result.new_employees += 1
+                    if is_weekend(record_date, working_days) or record_date in holidays:
+                        continue
 
-                daily_scans[(enno, record_date)].append(dt)
-            except (ValueError, KeyError) as exc:
-                result.warnings.append(f"Skipped corrupt record: {exc}")
+                    if enno not in known_employees:
+                        self.db.get_or_create_employee(enno, name, conn=conn)
+                        known_employees.add(enno)
+                        result.new_employees += 1
 
-        for (enno, record_date), scans in daily_scans.items():
-            scans.sort()
-            arrival = scans[0].time()
-            departure = scans[-1].time() if len(scans) > 1 else None
-            name = employee_names.get(enno, enno)
-            emp_id = self.db.get_or_create_employee(enno, name)
+                    daily_scans[(enno, record_date)].append(dt)
+                except (ValueError, KeyError) as exc:
+                    result.warnings.append(f"Skipped corrupt record: {exc}")
 
-            late_flag = is_late(arrival, threshold)
-            late_mins = minutes_late(arrival, threshold)
+            for (enno, record_date), scans in daily_scans.items():
+                scans.sort()
+                arrival = scans[0].time()
+                departure = scans[-1].time() if len(scans) > 1 else None
+                name = employee_names.get(enno, enno)
+                emp_id = self.db.get_or_create_employee(enno, name, conn=conn)
 
-            self.db.upsert_attendance(
-                emp_id, record_date, arrival, departure, late_flag, late_mins, filename
-            )
-            result.records_imported += 1
+                late_flag = is_late(arrival, threshold)
+                late_mins = minutes_late(arrival, threshold)
+
+                self.db.upsert_attendance(
+                    emp_id, record_date, arrival, departure, late_flag, late_mins, filename, conn=conn
+                )
+                result.records_imported += 1
 
         if replace_existing and result.date_start and result.date_end:
             shutil.copy2(source_path, dest_path)
@@ -288,33 +294,33 @@ class ImportManager:
         """Recalculate monthly metrics for last 12 months."""
         today = date.today()
         current = today.replace(day=1)
-        for _ in range(12):
-            month_start = current
-            if current.month == 12:
-                month_end = date(current.year, 12, 31)
-            else:
-                month_end = date(current.year, current.month + 1, 1) - timedelta(days=1)
-            if current.year == today.year and current.month == today.month:
-                month_end = today
+        with self.db.connection() as conn:
+            for _ in range(12):
+                month_start = current
+                if current.month == 12:
+                    month_end = date(current.year, 12, 31)
+                else:
+                    month_end = date(current.year, current.month + 1, 1) - timedelta(days=1)
+                if current.year == today.year and current.month == today.month:
+                    month_end = today
 
-            summaries = self.db.compute_employee_summary(month_start, month_end, working_days, holidays)
-            if summaries:
-                avg_rate = sum(s["attendance_rate"] for s in summaries) / len(summaries)
-                late_total = sum(s["late_days"] for s in summaries)
-                with self.db.connection() as conn:
+                summaries = self.db.compute_employee_summary(month_start, month_end, working_days, holidays, conn=conn)
+                if summaries:
+                    avg_rate = sum(s["attendance_rate"] for s in summaries) / len(summaries)
+                    late_total = sum(s["late_days"] for s in summaries)
                     rows = conn.execute(
                         """SELECT late_minutes FROM attendance_records
                            WHERE date BETWEEN ? AND ? AND is_late = 1""",
                         (month_start.isoformat(), month_end.isoformat()),
                     ).fetchall()
                     late_mins = [r["late_minutes"] for r in rows]
-                avg_late = sum(late_mins) / len(late_mins) if late_mins else 0
-                perfect = sum(1 for s in summaries if s["late_days"] == 0 and s["days_present"] > 0)
-                self.db.upsert_monthly_metrics(
-                    current.year, current.month, avg_rate, late_total, avg_late, perfect
-                )
+                    avg_late = sum(late_mins) / len(late_mins) if late_mins else 0
+                    perfect = sum(1 for s in summaries if s["late_days"] == 0 and s["days_present"] > 0)
+                    self.db.upsert_monthly_metrics(
+                        current.year, current.month, avg_rate, late_total, avg_late, perfect, conn=conn
+                    )
 
-            if current.month == 1:
-                current = date(current.year - 1, 12, 1)
-            else:
-                current = date(current.year, current.month - 1, 1)
+                if current.month == 1:
+                    current = date(current.year - 1, 12, 1)
+                else:
+                    current = date(current.year, current.month - 1, 1)

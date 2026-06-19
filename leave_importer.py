@@ -132,15 +132,16 @@ class LeaveImporter:
             return result
 
         import_year = year
-        for sheet_name in wb.sheetnames:
-            match = self.MONTH_SHEET_PATTERN.match(sheet_name.strip())
-            if match:
-                if import_year is None:
-                    import_year = int(match.group(2))
-                self._import_month_sheet(wb[sheet_name], import_year, result)
+        with self.db.connection() as conn:
+            for sheet_name in wb.sheetnames:
+                match = self.MONTH_SHEET_PATTERN.match(sheet_name.strip())
+                if match:
+                    if import_year is None:
+                        import_year = int(match.group(2))
+                    self._import_month_sheet(wb[sheet_name], import_year, result, conn)
 
-        if "Totals" in wb.sheetnames and import_year:
-            self._import_totals_sheet(wb["Totals"], import_year, result)
+            if "Totals" in wb.sheetnames and import_year:
+                self._import_totals_sheet(wb["Totals"], import_year, result, conn)
 
         wb.close()
         result.success = not result.errors
@@ -153,7 +154,7 @@ class LeaveImporter:
         return result
 
     def _import_month_sheet(
-        self, ws, year: int, result: LeaveImportResult
+        self, ws, year: int, result: LeaveImportResult, conn: Optional[Any] = None
     ) -> None:
         match = self.MONTH_SHEET_PATTERN.match(ws.title.strip())
         if not match:
@@ -175,7 +176,7 @@ class LeaveImporter:
                     result.warnings.append(f"Unmatched employee: {name_str}")
                 continue
 
-            emp = self.db.get_employee(emp_id)
+            emp = self.db.get_employee(emp_id, conn=conn)
             if emp and emp_id not in {m["employee_id"] for m in result.matched_employees}:
                 result.matched_employees.append({
                     "employee_id": emp_id,
@@ -193,10 +194,10 @@ class LeaveImporter:
                 if not code or not self.leave_mgr.is_valid_leave_code(code):
                     continue
                 record_date = date(year, month, day)
-                self.db.upsert_leave_record(emp_id, record_date, code)
+                self.db.upsert_leave_record(emp_id, record_date, code, conn=conn)
                 result.records_imported += 1
 
-    def _import_totals_sheet(self, ws, year: int, result: LeaveImportResult) -> None:
+    def _import_totals_sheet(self, ws, year: int, result: LeaveImportResult, conn: Optional[Any] = None) -> None:
         for row_idx in range(4, ws.max_row + 1):
             name_cell = ws.cell(row=row_idx, column=2).value
             if not name_cell or not str(name_cell).strip():
@@ -212,5 +213,5 @@ class LeaveImporter:
                 carry_over = float(carry) if carry is not None else 0.0
             except (TypeError, ValueError):
                 continue
-            self.db.set_entitlement(emp_id, year, annual, carry_over)
+            self.db.set_entitlement(emp_id, year, annual, carry_over, conn=conn)
             result.entitlements_imported += 1
