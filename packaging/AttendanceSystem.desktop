@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Attendance System
+Comment=Employee attendance management from AGLog files
+Exec=%INSTALL_DIR%/AttendanceSystem
+Icon=applications-office
+Terminal=false
+Categories=Office;Utility;
+StartupNotify=true

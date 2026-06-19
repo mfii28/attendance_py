@@ -1,0 +1,115 @@
+2026-06-10 09:20:23,598 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 09:20:23,605 [INFO] AttendanceSystem: Database initialized at C:\Users\De-Ups Computers\Desktop\app\attendance_system\attendance.db
+2026-06-10 09:28:38,008 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 09:28:38,012 [INFO] AttendanceSystem: Database initialized at C:\Users\De-Ups Computers\Desktop\app\attendance_system\attendance.db
+2026-06-10 10:26:18,462 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpsx7pnp0v.db
+2026-06-10 10:26:19,256 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpplji862o.db
+2026-06-10 10:26:19,842 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpywdqm3di.db
+2026-06-10 10:26:19,973 [INFO] AttendanceSystem: Name changed for employee 1: John Smith -> John S.
+2026-06-10 10:26:20,406 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpzatvvul_.db
+2026-06-10 10:26:21,118 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpi5xsyxoo.db
+2026-06-10 10:26:21,819 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpu_o9a9x9.db
+2026-06-10 10:26:22,409 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpwyvghfg_.db
+2026-06-10 10:26:22,410 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:22,476 [INFO] AttendanceSystem: Database backed up to C:\Users\De-Ups Computers\Desktop\app\attendance_system\backups\attendance_backup_20260610_102622.db
+2026-06-10 10:26:23,771 [INFO] AttendanceSystem: Import complete: 3 records, 0 skipped
+2026-06-10 10:26:23,826 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpu4110ktp.db
+2026-06-10 10:26:23,827 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:23,837 [INFO] AttendanceSystem: Database backed up to C:\Users\De-Ups Computers\Desktop\app\attendance_system\backups\attendance_backup_20260610_102623.db
+2026-06-10 10:26:24,163 [INFO] AttendanceSystem: Import complete: 9 records, 0 skipped
+2026-06-10 10:26:24,220 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpsicg886x.db
+2026-06-10 10:26:24,221 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:24,273 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpzf6ljdeh.db
+2026-06-10 10:26:24,276 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:24,336 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp2on2a_tl.db
+2026-06-10 10:26:24,337 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:24,395 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpvqdvgmgq.db
+2026-06-10 10:26:24,397 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:24,446 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpve_86rg5.db
+2026-06-10 10:26:24,448 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:24,531 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 10:26:24,572 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpa0d9m2nz.db
+2026-06-10 10:26:24,573 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:24,609 [INFO] AttendanceSystem: HTML dashboard written to C:\Users\DE-UPS~1\AppData\Local\Temp\tmp70giysnu\attendance_dashboard_20260610_102624.html
+2026-06-10 10:26:24,610 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 10:26:24,706 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 10:26:24,764 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpo46m6hi3.db
+2026-06-10 10:26:24,767 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 10:26:24,832 [INFO] AttendanceSystem: Generated 1 report(s): late_offenders
+2026-06-10 11:06:56,785 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpplaia1lu.db
+2026-06-10 11:06:56,924 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpopc1q02z.db
+2026-06-10 11:06:57,014 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpt7jz537a.db
+2026-06-10 11:06:57,043 [INFO] AttendanceSystem: Name changed for employee 1: John Smith -> John S.
+2026-06-10 11:06:57,109 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmplbillg0h.db
+2026-06-10 11:06:57,210 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp_aiaxqph.db
+2026-06-10 11:06:57,291 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp6w5mdx6m.db
+2026-06-10 11:06:57,350 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp94kpan1r.db
+2026-06-10 11:06:57,436 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpt0hdoxe_.db
+2026-06-10 11:06:57,446 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:57,570 [INFO] AttendanceSystem: Database backed up to C:\Users\De-Ups Computers\Desktop\app\attendance_system\backups\attendance_backup_20260610_110657.db
+2026-06-10 11:06:57,929 [INFO] AttendanceSystem: Import complete: 3 records, 0 skipped
+2026-06-10 11:06:57,985 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpfhb3qy38.db
+2026-06-10 11:06:57,993 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:58,013 [INFO] AttendanceSystem: Database backed up to C:\Users\De-Ups Computers\Desktop\app\attendance_system\backups\attendance_backup_20260610_110658.db
+2026-06-10 11:06:58,512 [INFO] AttendanceSystem: Import complete: 9 records, 0 skipped
+2026-06-10 11:06:58,567 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpbghbarj7.db
+2026-06-10 11:06:58,575 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:58,634 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpmt9xnz5i.db
+2026-06-10 11:06:58,641 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:58,695 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpafctw5hf.db
+2026-06-10 11:06:58,702 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:58,774 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpdy906ky3.db
+2026-06-10 11:06:58,781 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:58,847 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmphl2mq9bo.db
+2026-06-10 11:06:58,852 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:58,911 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpoeo27b87.db
+2026-06-10 11:06:58,916 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:59,047 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 11:06:59,101 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp_z58y0o6.db
+2026-06-10 11:06:59,112 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:59,163 [INFO] AttendanceSystem: HTML dashboard written to C:\Users\DE-UPS~1\AppData\Local\Temp\tmpj1n3qij2\attendance_dashboard_20260610_110659.html
+2026-06-10 11:06:59,163 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 11:06:59,273 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 11:06:59,337 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpx8phtlga.db
+2026-06-10 11:06:59,347 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:06:59,416 [INFO] AttendanceSystem: Generated 1 report(s): late_offenders
+2026-06-10 11:39:09,085 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpybr3m6g0.db
+2026-06-10 11:39:09,187 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp2mdttw5k.db
+2026-06-10 11:39:09,243 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpl3yzhu8m.db
+2026-06-10 11:39:09,262 [INFO] AttendanceSystem: Name changed for employee 1: None -> John S.
+2026-06-10 11:39:09,308 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpbk6sz_fh.db
+2026-06-10 11:39:09,353 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp8anp1_br.db
+2026-06-10 11:39:09,433 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpa2drhg2v.db
+2026-06-10 11:39:09,504 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp2ahnpvdf.db
+2026-06-10 11:39:09,556 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpv8r46ccb.db
+2026-06-10 11:39:09,574 [INFO] AttendanceSystem: Name changed for employee 1: None -> Friendly Name
+2026-06-10 11:39:09,634 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpo2ovjelm.db
+2026-06-10 11:39:09,707 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpfc49vm55.db
+2026-06-10 11:39:09,717 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:09,795 [INFO] AttendanceSystem: Database backed up to C:\Users\De-Ups Computers\Desktop\app\attendance_system\backups\attendance_backup_20260610_113909.db
+2026-06-10 11:39:10,045 [INFO] AttendanceSystem: Import complete: 3 records, 0 skipped
+2026-06-10 11:39:10,089 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpdkj1uuee.db
+2026-06-10 11:39:10,096 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,108 [INFO] AttendanceSystem: Database backed up to C:\Users\De-Ups Computers\Desktop\app\attendance_system\backups\attendance_backup_20260610_113910.db
+2026-06-10 11:39:10,412 [INFO] AttendanceSystem: Import complete: 9 records, 0 skipped
+2026-06-10 11:39:10,456 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmp1d6vj2vv.db
+2026-06-10 11:39:10,462 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,503 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmptftgqufv.db
+2026-06-10 11:39:10,509 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,551 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpobi8i_zk.db
+2026-06-10 11:39:10,559 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,617 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpn6_cxorq.db
+2026-06-10 11:39:10,624 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,678 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpqdlt2fte.db
+2026-06-10 11:39:10,686 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,728 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmphw5h0fkf.db
+2026-06-10 11:39:10,735 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,833 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 11:39:10,876 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpn5q5yich.db
+2026-06-10 11:39:10,885 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:10,917 [INFO] AttendanceSystem: HTML dashboard written to C:\Users\DE-UPS~1\AppData\Local\Temp\tmp9hz88n18\attendance_dashboard_20260610_113910.html
+2026-06-10 11:39:10,918 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 11:39:10,976 [INFO] AttendanceSystem: Generated 1 report(s): executive
+2026-06-10 11:39:11,021 [INFO] AttendanceSystem: Database initialized at C:\Users\DE-UPS~1\AppData\Local\Temp\tmpm9wqe0oy.db
+2026-06-10 11:39:11,026 [INFO] AttendanceSystem: Configuration loaded from C:\Users\De-Ups Computers\AppData\Local\AttendanceSystem\config.json
+2026-06-10 11:39:11,067 [INFO] AttendanceSystem: Generated 1 report(s): late_offenders
